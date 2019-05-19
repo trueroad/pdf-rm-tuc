@@ -20,6 +20,45 @@ AC_DEFINE_UNQUOTED([PACKAGE_LICENSE], ["$PACKAGE_LICENSE"],
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_GREP
+
+AC_PATH_PROG([DIFF], [diff])
+AS_IF([test "x$DIFF" = x],
+      [AC_MSG_WARN([diff isn't found. `make check' will fail tests.])])
+AC_SUBST([DIFF])
+
+AC_PATH_PROG([PDFFONTS], [pdffonts])
+AS_IF([test "x$PDFFONTS" = x],
+      [AC_MSG_WARN([pdffonts isn't found. `make check' will fail tests.])])
+AC_SUBST([PDFFONTS])
+
+AC_PATH_PROG([PDFTOTEXT], [pdftotext])
+AS_IF([test "x$PDFTOTEXT" = x],
+      [AC_MSG_WARN([pdftotext isn't found. `make check' will fail tests.])])
+AC_SUBST([PDFTOTEXT])
+
+AC_MSG_CHECKING([for pre-generated test PDFs])
+AS_IF([test ! -e ${srcdir}/test/ascii.pdf],
+      [AC_MSG_RESULT([no])
+       AC_PATH_PROG([LUATEX], [luatex])
+       AS_IF([test "x$LUATEX" = x],
+             [AC_MSG_WARN(
+                  [luatex isn't found. Test PDFs cannot be generated.])
+              AC_MSG_WARN(
+                  [You cannot use `make check'.])],
+             [AC_MSG_NOTICE(
+                  [luatex is found. Test PDFs will be generated.])])],
+      [AC_MSG_RESULT([yes])])
+AC_SUBST([LUATEX])
+
+AC_MSG_CHECKING([for pre-generated expected text files])
+AS_IF([test ! -e ${srcdir}/test/ascii-expected.pdftotext],
+      [AC_MSG_RESULT([no])
+       AC_MSG_WARN(
+           [Text files will be generated.])
+       AC_MSG_WARN(
+           [`make check' cannot compare with the correct expected results.])],
+      [AC_MSG_RESULT([yes])])
 
 # Checks for libraries.
 PKG_PROG_PKG_CONFIG
@@ -33,5 +72,6 @@ AX_CXX_COMPILE_STDCXX_11([noext], [mandatory])
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile
-    src/Makefile])
+    src/Makefile
+    test/Makefile])
 AC_OUTPUT
