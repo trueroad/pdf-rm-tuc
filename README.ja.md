@@ -86,7 +86,7 @@ PDF/A-1b, PDF/A-2b, PDF/A-3b のような
 
 ```
 $ pdf-rm-tuc
-Remove ToUnicode CMap from PDF 0.0.1
+Remove ToUnicode CMap from PDF 1.0.0
 Copyright (C) 2019 Masamichi Hosoda. All rights reserved.
 License: BSD-2-Clause
 
@@ -124,19 +124,72 @@ Output PDF settings (QPDF):
 $
 ```
 
-## ビルドとインストール
+## [ソース tarball](https://github.com/trueroad/pdf-rm-tuc/releases/download/v1.0.0/pdf-rm-tuc-1.0.0.tar.gz) からのインストール
 
-* 必要なもの
-    + C++11 対応コンパイラ（g++ 4.9 以降など）
-    + [libqpdf](http://qpdf.sourceforge.net/)
-    + Autotools, pkg-config など
+### 必要なもの
+
+* C++11 コンパイラ（g++ 4.9 以降等）
+* [libqpdf](http://qpdf.sourceforge.net/)
+* pkg-config 等
+
+パッケージを使って準備したい場合には、以下が便利でしょう。
+
+* Debian / Ubuntu
+    + libqpdf-dev
+* Fedora
+    + qpdf-devel
+* Cygwin
+    + libqpdf-devel
+
+### ビルド・インストール方法
 
 ```
+$ ./configure
+$ make
+$ make install
+```
+
+`pdffonts` `pdftotext` `diff` 等があれば、
+以下のようにインストール前にテストすることができます。
+（`pdffonts` `pdftotext` は
+[Poppler](https://poppler.freedesktop.org/)
+に含まれています。）
+
+```
+$ ./configure
+$ make
+$ make check
+$ make install
+```
+
+## [Git リポジトリ](https://github.com/trueroad/pdf-rm-tuc) からのインストール
+
+ソース tarball のビルド要件と追加の要件が必要です。
+
+### 追加で必要なもの
+
+* Autoconf 2.69 以降
+* Automake
+
+### 追加で推奨するもの
+
+* LuaTeX （テスト PDF の生成用）
+* [
+HaranoAji Fonts
+](https://github.com/trueroad/HaranoAjiFonts)
+（テスト PDF の生成用）
+
+### ビルド・インストール方法
+
+```
+$ git clone https://github.com/trueroad/pdf-rm-tuc.git
+$ cd pdf-rm-tuc
 $ ./autogen.sh
 $ mkdir build
 $ cd build
 $ ../configure
 $ make
+$ make check
 $ make install
 ```
 
